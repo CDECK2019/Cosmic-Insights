@@ -1,0 +1,1045 @@
+// Global arrays for countries and cities
+const countries = [
+    { name: 'United States', zodiac: 'Monkey' },
+    { name: 'Haiti', zodiac: 'Rat' },
+    { name: 'Mexico', zodiac: 'Horse' },
+    { name: 'Brazil', zodiac: 'Horse' },
+    { name: 'Belgium', zodiac: 'Tiger' },
+    { name: 'Canada', zodiac: 'Rabbit' },
+    { name: 'Germany', zodiac: 'Pig' },
+    { name: 'Australia', zodiac: 'Ox' },
+    { name: 'Norway', zodiac: 'Snake' },
+    { name: 'Finland', zodiac: 'Snake' },
+    { name: 'Poland', zodiac: 'Horse' },
+    { name: 'Ireland', zodiac: 'Dog' },
+    { name: 'Soviet Union (former)', zodiac: 'Dog' },
+    { name: 'Turkey', zodiac: 'Pig' },
+    { name: 'Saudi Arabia', zodiac: 'Monkey' },
+    { name: 'Iceland', zodiac: 'Monkey' },
+    { name: 'Syria', zodiac: 'Dog' },
+    { name: 'India', zodiac: 'Pig' },
+    { name: 'Israel', zodiac: 'Rat' },
+    { name: 'People\'s Republic of China', zodiac: 'Ox' },
+    { name: 'Libya', zodiac: 'Rabbit' },
+    { name: 'Sudan', zodiac: 'Monkey' },
+    { name: 'Ghana', zodiac: 'Rooster' },
+    { name: 'Malaysia', zodiac: 'Rooster' },
+    { name: 'Guinea', zodiac: 'Dog' },
+    { name: 'Burkina Faso', zodiac: 'Rat' },
+    { name: 'Nigeria', zodiac: 'Rat' },
+    { name: 'Kuwait', zodiac: 'Ox' },
+    { name: 'Tanzania', zodiac: 'Ox' },
+    { name: 'Jamaica', zodiac: 'Tiger' },
+    { name: 'Algeria', zodiac: 'Tiger' },
+    { name: 'Uganda', zodiac: 'Tiger' },
+    { name: 'Kenya', zodiac: 'Rabbit' },
+    { name: 'Singapore', zodiac: 'Snake' },
+    { name: 'Barbados', zodiac: 'Horse' },
+    { name: 'Botswana', zodiac: 'Horse' },
+    { name: 'Lesotho', zodiac: 'Horse' },
+    { name: 'Bangladesh', zodiac: 'Pig' },
+    { name: 'United Arab Emirates', zodiac: 'Pig' },
+    { name: 'Bahrain', zodiac: 'Pig' },
+    { name: 'Qatar', zodiac: 'Pig' },
+    { name: 'Angola', zodiac: 'Rabbit' },
+    { name: 'Papua New Guinea', zodiac: 'Rabbit' },
+    { name: 'Seychelles', zodiac: 'Dragon' },
+    { name: 'Vietnam', zodiac: 'Dragon' },
+    { name: 'Djibouti', zodiac: 'Snake' },
+    { name: 'Solomon Islands', zodiac: 'Horse' },
+    { name: 'Dominica', zodiac: 'Horse' },
+    { name: 'Saint Lucia', zodiac: 'Goat' },
+    { name: 'Zimbabwe', zodiac: 'Monkey' },
+    { name: 'Antigua and Barbuda', zodiac: 'Rooster' },
+    { name: 'Belize', zodiac: 'Rooster' },
+    { name: 'Namibia', zodiac: 'Horse' },
+    { name: 'Lithuania', zodiac: 'Horse' },
+    { name: 'Georgia', zodiac: 'Goat' },
+    { name: 'Ukraine', zodiac: 'Goat' },
+    { name: 'Czech Republic', zodiac: 'Rooster' },
+    { name: 'Slovakia', zodiac: 'Rooster' },
+    { name: 'Eritrea', zodiac: 'Rooster' },
+    { name: 'Palau', zodiac: 'Dog' },
+    { name: 'East Timor', zodiac: 'Horse' },
+    { name: 'Montenegro', zodiac: 'Dog' },
+    { name: 'Kosovo', zodiac: 'Rat' },
+    { name: 'South Sudan', zodiac: 'Rabbit' }
+];
+
+const cities = [
+    { name: 'New York City', country: 'USA', zodiac: 'Rat' },
+    { name: 'Los Angeles', country: 'USA', zodiac: 'Ox' },
+    { name: 'Chicago', country: 'USA', zodiac: 'Snake' },
+    { name: 'Houston', country: 'USA', zodiac: 'Monkey' },
+    { name: 'Phoenix', country: 'USA', zodiac: 'Rabbit' },
+    { name: 'Philadelphia', country: 'USA', zodiac: 'Dog' },
+    { name: 'San Antonio', country: 'USA', zodiac: 'Horse' },
+    { name: 'San Diego', country: 'USA', zodiac: 'Ox' },
+    { name: 'Dallas', country: 'USA', zodiac: 'Ox' },
+    { name: 'San Jose', country: 'USA', zodiac: 'Ox' },
+    { name: 'São Paulo', country: 'Brazil', zodiac: 'Tiger' },
+    { name: 'Mexico City', country: 'Mexico', zodiac: 'Ox' },
+    { name: 'Tokyo', country: 'Japan', zodiac: 'Rabbit' },
+    { name: 'Delhi', country: 'India', zodiac: 'Rat' },
+    { name: 'Shanghai', country: 'China', zodiac: 'Rabbit' },
+    { name: 'Mumbai', country: 'India', zodiac: 'Rabbit' },
+    { name: 'Beijing', country: 'China', zodiac: 'N/A' },
+    { name: 'Osaka', country: 'Japan', zodiac: 'Snake' },
+    { name: 'Cairo', country: 'Egypt', zodiac: 'Snake' },
+    { name: 'London', country: 'UK', zodiac: 'Rabbit' }
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('astrology-form');
+    const resultsSection = document.getElementById('results');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const birthdate = new Date(document.getElementById('birthdate').value);
+        const name = document.getElementById('name').value;
+        const city = document.getElementById('city').value;
+        const country = document.getElementById('country').value;
+
+        const results = performCalculations(birthdate, name, city, country);
+        displayResults(results);
+
+        resultsSection.style.display = 'grid';
+    });
+});
+
+function performCalculations(birthdate, name, city, country) {
+    const year = birthdate.getFullYear();
+    const month = birthdate.getMonth() + 1;
+    const day = birthdate.getDate();
+
+    const sunSign = getSunSign(month, day);
+    const chineseZodiac = getChineseZodiac(year);
+    const lifePathNumber = calculateLifePath(year, month, day);
+    const expressionNumber = calculateExpressionNumber(name);
+    const soulUrgeNumber = calculateSoulUrgeNumber(name);
+    const birthDayNumber = day;
+    const personalYearNumber = calculatePersonalYearNumber(birthdate);
+    const personalityNumber = calculatePersonalityNumber(name);
+    const subconsciousSelfNumber = calculateSubconsciousSelfNumber(name);
+    const challengeNumbers = calculateChallengeNumbers(birthdate);
+    const pinnacleNumbers = calculatePinnacleNumbers(birthdate);
+    const balanceNumber = calculateBalanceNumber(name);
+    const karmicDebt = getKarmicDebtNumber(year, month, day);
+    const gematria = calculateGematria(name);
+    const forecast = generateForecast(chineseZodiac.animal);
+    const locationCompatibility = calculateLocationCompatibility(city, country, chineseZodiac.animal);
+
+    const venusSign = getPlanetSign(birthdate, "Venus");
+    const marsSign = getPlanetSign(birthdate, "Mars");
+    const mercurySign = getPlanetSign(birthdate, "Mercury");
+
+    const elementsBalance = getElementsBalance(sunSign, venusSign, marsSign, mercurySign);
+    const modalitiesBalance = getModalitiesBalance(sunSign, venusSign, marsSign, mercurySign);
+
+    return {
+        sunSign,
+        sunSignDescription: getSunSignDescription(sunSign),
+        chineseZodiac,
+        chineseZodiacDescription: getChineseZodiacDescription(chineseZodiac),
+        lifePathNumber,
+        lifePathDescription: getLifePathDescription(lifePathNumber),
+        expressionNumber,
+        expressionDescription: getExpressionNumberDescription(expressionNumber),
+        soulUrgeNumber,
+        soulUrgeDescription: getSoulUrgeNumberDescription(soulUrgeNumber),
+        birthDayNumber,
+        birthDayNumberDescription: getBirthDayNumberDescription(birthDayNumber),
+        personalYearNumber,
+        personalYearNumberDescription: getPersonalYearNumberDescription(personalYearNumber),
+        personalityNumber,
+        personalityNumberDescription: getPersonalityNumberDescription(personalityNumber),
+        subconsciousSelfNumber,
+        subconsciousSelfNumberDescription: getSubconsciousSelfNumberDescription(subconsciousSelfNumber),
+        challengeNumbers,
+        challengeNumbersDescription: getChallengeNumbersDescription(challengeNumbers),
+        pinnacleNumbers,
+        pinnacleNumbersDescription: getPinnacleNumbersDescription(pinnacleNumbers),
+        balanceNumber,
+        balanceNumberDescription: getBalanceNumberDescription(balanceNumber),
+        karmicDebt,
+        karmicDebtDescription: getKarmicDebtDescription(karmicDebt),
+        gematria,
+        forecast,
+        locationCompatibility,
+        venusSign,
+        venusDescription: getPlanetaryDescription("venus", venusSign),
+        marsSign,
+        marsDescription: getPlanetaryDescription("mars", marsSign),
+        mercurySign,
+        mercuryDescription: getPlanetaryDescription("mercury", mercurySign),
+        elementsDescription: describeElementsBalance(elementsBalance),
+        modalitiesDescription: describeModalitiesBalance(modalitiesBalance)
+    };
+}
+
+function getSunSign(month, day) {
+    const signs = [
+        { name: "Capricorn", start: [1, 1], end: [1, 19] },
+        { name: "Aquarius", start: [1, 20], end: [2, 18] },
+        { name: "Pisces", start: [2, 19], end: [3, 20] },
+        { name: "Aries", start: [3, 21], end: [4, 19] },
+        { name: "Taurus", start: [4, 20], end: [5, 20] },
+        { name: "Gemini", start: [5, 21], end: [6, 20] },
+        { name: "Cancer", start: [6, 21], end: [7, 22] },
+        { name: "Leo", start: [7, 23], end: [8, 22] },
+        { name: "Virgo", start: [8, 23], end: [9, 22] },
+        { name: "Libra", start: [9, 23], end: [10, 22] },
+        { name: "Scorpio", start: [10, 23], end: [11, 21] },
+        { name: "Sagittarius", start: [11, 22], end: [12, 21] },
+        { name: "Capricorn", start: [12, 22], end: [12, 31] }
+    ];
+
+    const date = new Date(2000, month - 1, day);
+    return signs.find(sign => 
+        date >= new Date(2000, sign.start[0] - 1, sign.start[1]) && 
+        date <= new Date(2000, sign.end[0] - 1, sign.end[1])
+    ).name;
+}
+
+function getChineseZodiac(year) {
+    const animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+    const elements = ["Wood", "Fire", "Earth", "Metal", "Water"];
+    
+    const animalIndex = (year - 4) % 12;
+    const elementIndex = Math.floor((year - 4) % 10 / 2);
+
+    return {
+        animal: animals[animalIndex],
+        element: elements[elementIndex]
+    };
+}
+
+function calculateLifePath(year, month, day) {
+    let sum = day + month + year;
+    while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+        sum = sum.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+    }
+    return sum;
+}
+
+function calculateExpressionNumber(name) {
+    const letterValues = {
+        'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
+        'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
+        'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
+    };
+
+    let sum = 0;
+    for (let char of name.toUpperCase().replace(/[^A-Z]/g, '')) {
+        sum += letterValues[char] || 0;
+    }
+
+    while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+        sum = sum.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+    }
+
+    return sum;
+}
+
+function calculateSoulUrgeNumber(name) {
+    const vowels = 'AEIOU';
+    let sum = 0;
+    for (let char of name.toUpperCase()) {
+        if (vowels.includes(char)) {
+            sum += letterToNumber(char);
+        }
+    }
+    return reduceToSingleDigit(sum);
+}
+
+function calculatePersonalYearNumber(birthdate) {
+    const currentYear = new Date().getFullYear();
+    const birthMonth = birthdate.getMonth() + 1;
+    const birthDay = birthdate.getDate();
+
+    let sum = birthMonth + birthDay + currentYear;
+    return reduceToSingleDigit(sum);
+}
+
+function calculatePersonalityNumber(name) {
+    const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
+    let sum = 0;
+    for (let char of name.toUpperCase()) {
+        if (consonants.includes(char)) {
+            sum += letterToNumber(char);
+        }
+    }
+    return reduceToSingleDigit(sum);
+}
+
+function calculateSubconsciousSelfNumber(name) {
+    return reduceToSingleDigit(calculateExpressionNumber(name) + calculateSoulUrgeNumber(name));
+}
+
+function calculateChallengeNumbers(birthdate) {
+    const month = birthdate.getMonth() + 1;
+    const day = birthdate.getDate();
+    const year = birthdate.getFullYear();
+
+    const c1 = Math.abs(month - day);
+    const c2 = Math.abs(year - (month + day));
+    const c3 = Math.abs(c1 - c2);
+    const c4 = Math.abs(month - year);
+
+    return [c1, c2, c3, c4].map(num => reduceToSingleDigit(num));
+}
+
+function calculatePinnacleNumbers(birthdate) {
+    const month = birthdate.getMonth() + 1;
+    const day = birthdate.getDate();
+    const year = birthdate.getFullYear();
+
+    const p1 = reduceToSingleDigit(month + day);
+    const p2 = reduceToSingleDigit(day + year);
+    const p3 = reduceToSingleDigit(p1 + p2);
+    const p4 = reduceToSingleDigit(month + year);
+
+    return [p1, p2, p3, p4];
+}
+
+function calculateBalanceNumber(name) {
+    const firstInitial = name.split(' ')[0][0].toUpperCase();
+    return letterToNumber(firstInitial);
+}
+
+function calculateGematria(name) {
+    const standard = calculateStandard(name);
+    const ordinal = calculateOrdinal(name);
+    const reduced = calculateReduced(name);
+
+    return { standard, ordinal, reduced };
+}
+
+function calculateStandard(input) {
+    return input.toUpperCase().split('').reduce((sum, char) => {
+        const value = char.charCodeAt(0) - 64;
+        return sum + (value > 0 && value < 27 ? value : 0);
+    }, 0);
+}
+
+function calculateOrdinal(input) {
+    return input.toLowerCase().split('').reduce((sum, char) => {
+        const value = char.charCodeAt(0) - 96;
+        return sum + (value > 0 && value < 27 ? value : 0);
+    }, 0);
+}
+
+function calculateReduced(input) {
+    return input.toUpperCase().split('').reduce((sum, char) => {
+        let value = char.charCodeAt(0) - 64;
+        if (value > 0 && value < 27) {
+            value = value % 9 || 9;
+        } else {
+            value = 0;
+        }
+        return sum + value;
+    }, 0);
+}
+
+function generateForecast(userZodiac) {
+    const currentYear = new Date().getFullYear();
+    const forecast = [];
+
+    for (let i = 0; i < 10; i++) {
+        const year = currentYear + i;
+        const yearZodiac = getChineseZodiacDetails(year);
+        const relationship = getZodiacRelationship(userZodiac, yearZodiac.animal);
+        forecast.push({ year, zodiac: yearZodiac, relationship });
+    }
+
+    return forecast;
+}
+
+function calculateLocationCompatibility(city, country, userZodiac) {
+    const cityData = cities.find(c => c.name === city);
+    const countryData = countries.find(c => c.name === country);
+
+    const cityRelationship = cityData ? getZodiacRelationship(userZodiac, cityData.zodiac) : "Unknown";
+    const countryRelationship = countryData ? getZodiacRelationship(userZodiac, countryData.zodiac) : "Unknown";
+
+    const optimalCities = cities.filter(c => getZodiacRelationship(userZodiac, c.zodiac) === "auspicious").map(c => c.name);
+    const optimalCountries = countries.filter(c => getZodiacRelationship(userZodiac, c.zodiac) === "auspicious").map(c => c.name);
+
+    return {
+        cityZodiac: cityData ? cityData.zodiac : "Unknown",
+        cityRelationship,
+        countryZodiac: countryData ? countryData.zodiac : "Unknown",
+        countryRelationship,
+        optimalCities: optimalCities.join(", "),
+        optimalCountries: optimalCountries.join(", ")
+    };
+}
+
+function getZodiacRelationship(userSign, yearSign) { 
+    const relationships = {
+        "Rat": { auspicious: ["Ox", "Dragon", "Monkey"], cautious: ["Horse", "Goat", "Rabbit"] },
+        "Ox": { auspicious: ["Rat", "Snake", "Rooster"], cautious: ["Tiger", "Dragon", "Horse"] },
+        "Tiger": { auspicious: ["Horse", "Dog", "Pig"], cautious: ["Ox", "Snake", "Monkey"] },
+        "Rabbit": { auspicious: ["Goat", "Dog", "Pig"], cautious: ["Rat", "Snake", "Rooster"] },
+        "Dragon": { auspicious: ["Rat", "Dragon"], auspicious: ["Rat", "Monkey", "Rooster"], cautious: ["Ox", "Dog", "Rabbit"] },
+        "Snake": { auspicious: ["Ox", "Rooster"], cautious: ["Tiger", "Pig"] },
+        "Horse": { auspicious: ["Tiger", "Goat", "Dog"], cautious: ["Rat", "Ox", "Rooster"] },
+        "Goat": { auspicious: ["Rabbit", "Horse", "Pig"], cautious: ["Rat", "Ox", "Dog"] },
+        "Monkey": { auspicious: ["Rat", "Dragon", "Snake"], cautious: ["Tiger", "Pig"] },
+        "Rooster": { auspicious: ["Ox", "Snake", "Dragon"], cautious: ["Rat", "Rabbit", "Dog"] },
+        "Dog": { auspicious: ["Tiger", "Rabbit", "Horse"], cautious: ["Ox", "Dragon", "Goat"] },
+        "Pig": { auspicious: ["Tiger", "Rabbit", "Goat"], cautious: ["Snake", "Monkey"] }
+    };
+
+    if (relationships[userSign].auspicious.includes(yearSign)) return "auspicious";
+    if (relationships[userSign].cautious.includes(yearSign)) return "cautious";
+    return "neutral";
+}
+
+function getChineseZodiacDetails(year) {
+    const animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+    const elements = ["Wood", "Fire", "Earth", "Metal", "Water"];
+    const polarities = ["Yang", "Yin"];
+
+    const animalIndex = (year - 4) % 12;
+    const elementIndex = Math.floor((year - 4) % 10 / 2);
+    const polarityIndex = (year - 4) % 2;
+
+    return {
+        animal: animals[animalIndex],
+        element: elements[elementIndex],
+        polarity: polarities[polarityIndex]
+    };
+}
+
+function getPlanetSign(birthDate, planet) {
+    const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+    const offset = { "Venus": 2, "Mars": 1, "Mercury": 3 };
+    return signs[(birthDate.getMonth() + birthDate.getDate() + offset[planet]) % 12];
+}
+
+function getElementsBalance(sunSign, venusSign, marsSign, mercurySign) {
+    const elements = {
+        "Fire": ["Aries", "Leo", "Sagittarius"],
+        "Earth": ["Taurus", "Virgo", "Capricorn"],
+        "Air": ["Gemini", "Libra", "Aquarius"],
+        "Water": ["Cancer", "Scorpio", "Pisces"]
+    };
+    return [sunSign, venusSign, marsSign, mercurySign].reduce((balance, sign) => {
+        for (let [element, signs] of Object.entries(elements)) {
+            if (signs.includes(sign)) balance[element]++;
+        }
+        return balance;
+    }, { "Fire": 0, "Earth": 0, "Air": 0, "Water": 0 });
+}
+
+function getModalitiesBalance(sunSign, venusSign, marsSign, mercurySign) {
+    const modalities = {
+        "Cardinal": ["Aries", "Cancer", "Libra", "Capricorn"],
+        "Fixed": ["Taurus", "Leo", "Scorpio", "Aquarius"],
+        "Mutable": ["Gemini", "Virgo", "Sagittarius", "Pisces"]
+    };
+    return [sunSign, venusSign, marsSign, mercurySign].reduce((balance, sign) => {
+        for (let [modality, signs] of Object.entries(modalities)) {
+            if (signs.includes(sign)) balance[modality]++;
+        }
+        return balance;
+    }, { "Cardinal": 0, "Fixed": 0, "Mutable": 0 });
+}
+
+function getKarmicDebtNumber(year, month, day) {
+    const karmicDebtNumbers = [13, 14, 16, 19];
+    
+    let sum = month + day + year.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+    
+    if (karmicDebtNumbers.includes(sum)) {
+        return sum;
+    }
+    
+    while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+        sum = sum.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+        if (karmicDebtNumbers.includes(sum)) {
+            return sum;
+        }
+    }
+    
+    return null;
+}
+
+function letterToNumber(letter) {
+    const letterValues = new Map([
+        ['A', 1], ['B', 2], ['C', 3], ['D', 4], ['E', 5], ['F', 6], ['G', 7], ['H', 8], ['I', 9],
+        ['J', 1], ['K', 2], ['L', 3], ['M', 4], ['N', 5], ['O', 6], ['P', 7], ['Q', 8], ['R', 9],
+        ['S', 1], ['T', 2], ['U', 3], ['V', 4], ['W', 5], ['X', 6], ['Y', 7], ['Z', 8]
+    ]);
+    return letterValues.get(letter.toUpperCase()) || 0;
+}
+
+function reduceToSingleDigit(num) {
+    if (num === 11 || num === 22 || num === 33) {
+        return num;
+    }
+    while (num > 9) {
+        num = num.toString().split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+    }
+    return num;
+}
+
+// Description functions
+function getSunSignDescription(sign) {
+    const descriptions = {
+        "Aries": "Aries is a fire sign known for its boldness and leadership. You're energetic, courageous, and often the first to start new ventures.",
+        "Taurus": "Taurus is an earth sign associated with stability and sensuality. You're patient, reliable, and have a strong appreciation for beauty and comfort.",
+        "Gemini": "Gemini is an air sign characterized by duality and communication. You're witty, versatile, and always curious to learn new things.",
+        "Cancer": "Cancer is a water sign known for its emotional depth and nurturing nature. You're intuitive, protective, and deeply connected to home and family.",
+        "Leo": "Leo is a fire sign associated with creativity and self-expression. You're confident, charismatic, and natural-born leaders.",
+        "Virgo": "Virgo is an earth sign known for its analytical mind and attention to detail. You're practical, hardworking, and always striving for perfection.",
+        "Libra": "Libra is an air sign associated with balance and harmony. You're diplomatic, charming, and have a strong sense of justice.",
+        "Scorpio": "Scorpio is a water sign known for its intensity and passion. You're resourceful, brave, and have a magnetic personality.",
+        "Sagittarius": "Sagittarius is a fire sign characterized by its love for adventure and philosophy. You're optimistic, honest, and always seeking to expand your horizons.",
+        "Capricorn": "Capricorn is an earth sign known for its ambition and discipline. You're responsible, patient, and have a strong drive to achieve your goals.",
+        "Aquarius": "Aquarius is an air sign associated with innovation and humanitarianism. You're original, independent, and often ahead of your time.",
+        "Pisces": "Pisces is a water sign known for its imagination and empathy. You're intuitive, compassionate, and have a deep connection to the spiritual world."
+    };
+    return descriptions[sign] || "Description not available.";
+}
+
+function getChineseZodiacDescription(zodiac) {
+    const { element, animal } = zodiac;
+    const animalDescriptions = {
+        "Rat": "Quick-witted, resourceful, and versatile. Kind, but sometimes seen as manipulative and greedy.",
+        "Ox": "Diligent, dependable, and determined. Honest and earnest, but can be stubborn and poor at communication.",
+        "Tiger": "Brave, confident, and charismatic. Enthusiastic and generous, but can be aggressive and short-tempered.",
+        "Rabbit": "Gentle, quiet, and elegant. Kind and responsible, but might be a bit superficial and overly-discreet.",
+        "Dragon": "Powerful, charismatic, and lucky. Energetic and warm-hearted, but can be arrogant and impatient.",
+        "Snake": "Enigmatic, intuitive, and wise. Humorous and sophisticated, but can be jealous and suspicious.",
+        "Horse": "Energetic, independent, and noble. Warm-hearted and enthusiastic, but can be impatient and hot-blooded.",
+        "Goat": "Gentle, compassionate, and peaceful. Creative and honest, but can be indecisive and pessimistic.",
+        "Monkey": "Witty, intelligent, and magnetic. Curious and playful, but can be mischievous and disrespectful.",
+        "Rooster": "Observant, hardworking, and courageous. Talented and honest, but can be arrogant and critical.",
+        "Dog": "Loyal, honest, and amiable. Kind and cautious, but can be temperamental and critical.",
+        "Pig": "Diligent, compassionate, and generous. Optimistic and honest, but can be naive and short-tempered."
+    };
+
+    const elementDescriptions = {
+        "Wood": "Wood signs are creative, imaginative, and idealistic. They're often compassionate and have a strong sense of social responsibility.",
+        "Fire": "Fire signs are dynamic, passionate, and energetic. They're natural leaders with strong drive and determination.",
+        "Earth": "Earth signs are practical, reliable, and stable. They're grounded individuals who value security and tradition.",
+        "Metal": "Metal signs are strong, independent, and ambitious. They're often self-reliant and have a strong sense of justice.",
+        "Water": "Water signs are intuitive, empathetic, and adaptable. They're often deeply emotional and have strong interpersonal skills."
+    };
+
+    return `${element} ${animal}: ${animalDescriptions[animal]} As a ${element} sign, ${elementDescriptions[element].toLowerCase()}`;
+}
+
+function getLifePathDescription(number) {
+    const descriptions = {
+        1: "Life Path 1 is the path of the leader. You are independent, creative, and a strong individual. You have the potential to achieve great things and inspire others.",
+        2: "Life Path 2 is the path of the peacemaker. You are diplomatic, cooperative, and sensitive. Your strength lies in your ability to bring people together and create harmony.",
+        3: "Life Path 3 is the path of the creative. You are expressive, optimistic, and have a great zest for life. Your creativity and charm can light up any room.",
+        4: "Life Path 4 is the path of the builder. You are practical, hardworking, and have a strong sense of order. Your dedication and reliability make you a cornerstone in any endeavor.",
+        5: "Life Path 5 is the path of the freedom seeker. You are adventurous, versatile, and progressive. Your adaptability and curiosity lead you to exciting experiences.",
+        6: "Life Path 6 is the path of the nurturer. You are responsible, caring, and have a deep love for home and family. Your compassion makes you a source of comfort for others.",
+        7: "Life Path 7 is the path of the seeker. You are analytical, introspective, and have a deep spiritual side. Your quest for knowledge leads to profound insights.",
+        8: "Life Path 8 is the path of the powerhouse. You are ambitious, confident, and have great potential for success in the material world. Your drive can lead to significant achievements.",
+        9: "Life Path 9 is the path of the humanitarian. You are compassionate, generous, and have a global perspective. Your empathy can make a real difference in the world.",
+        11: "Life Path 11 is a master number representing intuition and spiritual insight. You are inspirational, highly sensitive, and possess a strong sense of purpose.",
+        22: "Life Path 22 is a master number known as the Master Builder. You have the potential to turn dreams into reality on a large scale, with leadership and vision.",
+        33: "Life Path 33 is a rare master number of the Master Teacher. You have a great capacity for love, understanding, and compassion, with a focus on raising human consciousness."
+    };
+    return descriptions[number] || "Invalid Life Path number";
+}
+
+function getExpressionNumberDescription(number) {
+    const descriptions = {
+        1: "You are a natural leader with strong individuality and creativity.",
+        2: "You excel in partnerships and have a diplomatic, cooperative nature.",
+        3: "You have a gift for self-expression, creativity, and communication.",
+        4: "You are practical, reliable, and have excellent organizational skills.",
+        5: "You are versatile, adventurous, and crave freedom and change.",
+        6: "You are nurturing, responsible, and have a strong sense of harmony.",
+        7: "You have a deep, analytical mind and a strong spiritual inclination.",
+        8: "You have great potential for success in business and material realms.",
+        9: "You are humanitarian, idealistic, and have a global consciousness.",
+        11: "As a master number, you have high intuition and spiritual insight.",
+        22: "As a master number, you have the potential to be a master builder.",
+        33: "As a master number, you have great spiritual understanding and compassion."
+    };
+    return descriptions[number] || "Invalid Expression Number";
+}
+
+function getSoulUrgeNumberDescription(number) {
+    const descriptions = {
+        1: "You desire to be a leader and pioneer new paths.",
+        2: "You seek harmony, balance, and cooperation in your life.",
+        3: "You have a deep need for creativity and self-expression.",
+        4: "You yearn for stability, order, and to build lasting foundations.",
+        5: "You crave freedom, variety, and new experiences.",
+        6: "You have a strong desire to nurture and care for others.",
+        7: "You seek knowledge, understanding, and spiritual growth.",
+        8: "You aspire to achieve material success and personal power.",
+        9: "You have a deep wish to serve humanity and make a difference.",
+        11: "You have a strong intuition and aspire to spiritual enlightenment.",
+        22: "You dream of building something of lasting value for humanity.",
+        33: "You aspire to become a spiritual teacher or healer for the world."
+    };
+    return descriptions[number] || "Invalid Soul Urge Number";
+}
+
+function getBirthDayNumberDescription(number) {
+    const descriptions = {
+        1: "You have natural leadership abilities and strong individuality.",
+        2: "You excel in partnerships and have a diplomatic nature.",
+        3: "You have a gift for self-expression and creativity.",
+        4: "You are practical, reliable, and have excellent organizational skills.",
+        5: "You are versatile, adventurous, and crave freedom.",
+        6: "You are nurturing, responsible, and have a strong sense of harmony.",
+        7: "You have a deep, analytical mind and spiritual inclination.",
+        8: "You have great potential for success in business and material realms.",
+        9: "You are humanitarian, idealistic, and have a global consciousness.",
+        10: "You are independent, original, and have leadership potential.",
+        11: "You have high intuition and spiritual insight.",
+        12: "You have a strong sense of duty and the ability to achieve great things.",
+        13: "You have the power to manifest your desires through hard work and determination.",
+        14: "You bring new and unconventional ideas to the world.",
+        15: "You have a magnetic personality and the ability to overcome obstacles.",
+        16: "You have the potential for spiritual awakening and transformation.",
+        17: "You have a highly developed analytical mind and spiritual awareness.",
+        18: "You have the ability to achieve material success and help others.",
+        19: "You are independent and have strong leadership qualities.",
+        20: "You are sensitive, intuitive, and cooperative.",
+        21: "You have the potential for success through your creativity and self-expression.",
+        22: "You have the capacity to be a master builder, turning dreams into reality.",
+        23: "You have a unique creative expression and the ability to inspire others.",
+        24: "You have a practical approach to life and the ability to build solid foundations.",
+        25: "You have a quick mind and the ability to adapt to change.",
+        26: "You have a nurturing nature and the ability to create harmony.",
+        27: "You have a deep, intuitive understanding of spiritual matters.",
+        28: "You have natural leadership abilities and the potential for material success.",
+        29: "You have a humanitarian outlook and the ability to make a global impact.",
+        30: "You have creative talents and the ability to express yourself effectively.",
+        31: "You have innovative ideas and the ability to lead others."
+    };
+    return descriptions[number] || "Invalid Birth Day Number";
+}
+
+function getPersonalYearNumberDescription(number) {
+    const descriptions = {
+        1: "A year of new beginnings and opportunities. Take initiative and start fresh projects.",
+        2: "A year for partnerships and cooperation. Focus on relationships and diplomacy.",
+        3: "A year for creativity and self-expression. Enjoy social activities and communication.",
+        4: "A year for building solid foundations. Focus on practical matters and organization.",
+        5: "A year of change and adventure. Embrace new experiences and be adaptable.",
+        6: "A year for home, family, and responsibilities. Focus on nurturing and harmony.",
+        7: "A year for introspection and spiritual growth. Seek knowledge and understanding.",
+        8: "A year for material success and power. Focus on business and financial matters.",
+        9: "A year of completion and humanitarianism. Let go of the old and serve others.",
+    };
+    return descriptions[number] || "Invalid Personal Year Number";
+}
+
+function getPersonalityNumberDescription(number) {
+    const descriptions = {
+        1: "You appear confident, independent, and original to others.",
+        2: "Others see you as cooperative, diplomatic, and sensitive.",
+        3: "You come across as expressive, charming, and sociable.",
+        4: "Others perceive you as reliable, practical, and hard-working.",
+        5: "You appear adventurous, versatile, and progressive to others.",
+        6: "Others see you as responsible, nurturing, and harmonious.",
+        7: "You come across as analytical, introspective, and mysterious.",
+        8: "Others perceive you as ambitious, confident, and authoritative.",
+        9: "You appear compassionate, idealistic, and sophisticated to others.",
+        11: "Others see you as inspiring, intuitive, and idealistic.",
+        22: "You come across as visionary, practical, and capable of great achievements."
+    };
+    return descriptions[number] || "Invalid Personality Number";
+}
+
+function getSubconsciousSelfNumberDescription(number) {
+    const descriptions = {
+        1: "Your inner self is independent and creative.",
+        2: "Your inner self is cooperative and sensitive.",
+        3: "Your inner self is expressive and joyful.",
+        4: "Your inner self is practical and organized.",
+        5: "Your inner self is adventurous and freedom-loving.",
+        6: "Your inner self is responsible and nurturing.",
+        7: "Your inner self is analytical and spiritual.",
+        8: "Your inner self is ambitious and powerful.",
+        9: "Your inner self is compassionate and idealistic.",
+        11: "Your inner self is highly intuitive and inspirational.",
+        22: "Your inner self has the potential for great achievements."
+    };
+    return descriptions[number] || "Invalid Subconscious Self Number";
+}
+
+function getChallengeNumbersDescription(numbers) {
+    const descriptions = {
+        0: "You face no significant obstacles in this area of your life.",
+        1: "You need to develop independence and overcome self-doubt.",
+        2: "You must learn to cooperate with others and be more diplomatic.",
+        3: "You need to express yourself more fully and overcome self-criticism.",
+        4: "You must develop patience, perseverance, and practical skills.",
+        5: "You need to embrace change and overcome fear of the unknown.",
+        6: "You must learn to balance your responsibilities with self-care.",
+        7: "You need to develop trust in your intuition and overcome skepticism.",
+        8: "You must learn to use power wisely and overcome material attachment."
+    };
+    return numbers.map((num, index) => `Challenge ${index + 1}: ${descriptions[num]}`).join('<br>');
+}
+
+function getPinnacleNumbersDescription(numbers) {
+    const descriptions = {
+        1: "A period of leadership, independence, and new beginnings.",
+        2: "A time for cooperation, partnerships, and diplomacy.",
+        3: "A phase of creativity, self-expression, and social growth.",
+        4: "A period of building solid foundations and practical achievements.",
+        5: "A time of change, freedom, and new experiences.",
+        6: "A phase of responsibility, nurturing, and harmony.",
+        7: "A period of spiritual growth, wisdom, and introspection.",
+        8: "A time of material success, power, and authority.",
+        9: "A phase of humanitarianism, completion, and universal love.",
+        11: "A period of inspiration, intuition, and spiritual enlightenment.",
+        22: "A time of major achievements, vision, and practical idealism."
+    };
+    return numbers.map((num, index) => `Pinnacle ${index + 1}: ${descriptions[num]}`).join('<br>');
+}
+
+function getBalanceNumberDescription(number) {
+    const descriptions = {
+        1: "In times of stress, assert your independence and take initiative.",
+        2: "When facing challenges, seek cooperation and use diplomacy.",
+        3: "To find balance, express yourself creatively and maintain optimism.",
+        4: "During difficult times, focus on practical solutions and stay organized.",
+        5: "To regain equilibrium, embrace change and seek new experiences.",
+        6: "When stressed, focus on your responsibilities and create harmony.",
+        7: "To find peace, seek solitude and engage in introspection.",
+        8: "During challenges, focus on your goals and use your personal power wisely.",
+        9: "To restore balance, practice compassion and think on a global scale."
+    };
+    return descriptions[number] || "Invalid Balance Number";
+}
+
+function getKarmicDebtDescription(number) {
+    switch(number) {
+        case 13: return "Karmic Debt 13 relates to laziness and selfishness in past lives. It requires hard work and selfless service to others.";
+        case 14: return "Karmic Debt 14 indicates abuse of freedom in past lives. It requires learning self-control and using freedom responsibly.";
+        case 16: return "Karmic Debt 16 relates to ego and failure to take responsibility in past lives. It requires learning humility and accepting consequences.";
+        case 19: return "Karmic Debt 19 indicates abuse of power in past lives. It requires learning to use power and authority for the benefit of others.";
+        default: return "No Karmic Debt";
+    }
+}
+
+function analyzeGematriaValue(value, method) {
+    const basicSymbolism = {
+        1: "New beginnings, independence, individuality",
+        2: "Balance, duality, partnership",
+        3: "Creativity, expression, growth",
+        4: "Stability, foundation, practicality",
+        5: "Change, freedom, adventure",
+        6: "Harmony, love, nurturing",
+        7: "Spirituality, introspection, wisdom",
+        8: "Power, abundance, success",
+        9: "Completion, humanitarianism, spiritual enlightenment",
+        11: "Intuition, spiritual insight, enlightenment",
+        22: "Master builder, large-scale endeavors, material mastery",
+        33: "Spiritual master, selfless service, higher consciousness"
+    };
+
+    let reducedValue = value;
+    while (reducedValue > 9 && reducedValue !== 11 && reducedValue !== 22 && reducedValue !== 33) {
+        reducedValue = String(reducedValue).split('').reduce((a, b) => Number(a) + Number(b), 0);
+    }
+
+    let analysis = `Original value: ${value}. `;
+    if (value !== reducedValue) {
+        analysis += `Reduces to: ${reducedValue}. `;
+    }
+
+    if (reducedValue in basicSymbolism) {
+        analysis += `${basicSymbolism[reducedValue]}. `;
+    }
+
+    switch (method) {
+        case 'Standard (Ordinal)':
+            analysis += "This represents the core essence or external expression. ";
+            break;
+        case 'Ordinal':
+            analysis += "This reflects the practical or mundane aspects of the name or word. ";
+            break;
+        case 'Reduction':
+            analysis += "This reveals hidden talents or internal motivations. ";
+            break;
+    }
+
+    if (reducedValue === 11 || reducedValue === 22 || reducedValue === 33) {
+        analysis += "This is a Master Number. ";
+        switch (reducedValue) {
+            case 11:
+                analysis += "It signifies intuition, spiritual insight, and enlightenment. ";
+                break;
+            case 22:
+                analysis += "It represents the master builder, capable of turning dreams into reality. ";
+                break;
+            case 33:
+                analysis += "It embodies the master teacher, focusing on spiritual upliftment of humanity. ";
+                break;
+        }
+    }
+
+    return analysis;
+}
+
+function describeElementsBalance(balance) {
+    const total = balance.Fire + balance.Earth + balance.Air + balance.Water;
+    let description = "Your elements balance: ";
+
+    if (total === 0) {
+        return "No element information available.";
+    }
+
+    const strongestElement = Object.entries(balance).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+    const percentages = {
+        Fire: Math.round((balance.Fire / total) * 100),
+        Earth: Math.round((balance.Earth / total) * 100),
+        Air: Math.round((balance.Air / total) * 100),
+        Water: Math.round((balance.Water / total) * 100)
+    };
+
+    description += `Fire ${percentages.Fire}%, Earth ${percentages.Earth}%, Air ${percentages.Air}%, Water ${percentages.Water}%. `;
+
+    if (Math.max(...Object.values(percentages)) >= 50) {
+        description += `You have a strong ${strongestElement} element. `;
+        switch (strongestElement) {
+            case 'Fire':
+                description += "You're likely to be energetic, passionate, and action-oriented.";
+                break;
+            case 'Earth':
+                description += "You're likely to be practical, grounded, and focused on material concerns.";
+                break;
+            case 'Air':
+                description += "You're likely to be intellectual, communicative, and focused on ideas.";
+                break;
+            case 'Water':
+                description += "You're likely to be emotional, intuitive, and empathetic.";
+                break;
+        }
+    } else {
+        description += "Your elements are fairly balanced, indicating a well-rounded nature that can draw upon different elemental strengths.";
+    }
+
+    return description;
+}
+
+function describeModalitiesBalance(balance) {
+    const total = balance.Cardinal + balance.Fixed + balance.Mutable;
+    let description = "Your modalities balance: ";
+
+    if (total === 0) {
+        return "No modality information available.";
+    }
+
+    const strongestModality = Object.entries(balance).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+    const percentages = {
+        Cardinal: Math.round((balance.Cardinal / total) * 100),
+        Fixed: Math.round((balance.Fixed / total) * 100),
+        Mutable: Math.round((balance.Mutable / total) * 100)
+    };
+
+    description += `Cardinal ${percentages.Cardinal}%, Fixed ${percentages.Fixed}%, Mutable ${percentages.Mutable}%. `;
+
+    if (Math.max(...Object.values(percentages)) >= 50) {
+        description += `You have a strong ${strongestModality} modality. `;
+        switch (strongestModality) {
+            case 'Cardinal':
+                description += "You're likely to be proactive, ambitious, and good at starting new projects.";
+                break;
+            case 'Fixed':
+                description += "You're likely to be stable, determined, and resistant to change.";
+                break;
+            case 'Mutable':
+                description += "You're likely to be flexible, adaptable, and good at managing change.";
+                break;
+        }
+    } else {
+        description += "Your modalities are fairly balanced, indicating a versatile nature that can adapt to different situations.";
+    }
+
+    return description;
+}
+
+function displayResults(results) {
+    const resultsDiv = document.getElementById('results');
+    if (!resultsDiv) {
+        console.error('Results container not found');
+        return;
+    }
+
+    let resultsHTML = `
+        <h2>Astrology Results</h2>
+        <p><strong>Sun Sign:</strong> ${results.sunSign}</p>
+        <p>${results.sunSignDescription}</p>
+        <p><strong>Chinese Zodiac:</strong> ${results.chineseZodiac.animal} (${results.chineseZodiac.element})</p>
+        <p>${results.chineseZodiacDescription}</p>
+        <p><strong>Venus Sign:</strong> ${results.venusSign}</p>
+        <p>${results.venusDescription}</p>
+        <p><strong>Mars Sign:</strong> ${results.marsSign}</p>
+        <p>${results.marsDescription}</p>
+        <p><strong>Mercury Sign:</strong> ${results.mercurySign}</p>
+        <p>${results.mercuryDescription}</p>
+
+        <h2>10-Year Chinese Zodiac Forecast</h2>
+        <div class="forecast">
+            ${results.forecast.map(year => `
+                <div class="forecast-year ${year.relationship}">
+                    <strong>${year.year}:</strong> ${year.zodiac.animal} (${year.zodiac.element} ${year.zodiac.polarity}) - ${year.relationship}
+                </div>
+            `).join('')}
+        </div>
+
+        <h2>Numerology Results</h2>
+        <p><strong>Life Path Number:</strong> ${results.lifePathNumber}</p>
+        <p>${results.lifePathDescription}</p>
+        <p><strong>Expression Number:</strong> ${results.expressionNumber}</p>
+        <p>${results.expressionDescription}</p>
+        <p><strong>Soul Urge Number:</strong> ${results.soulUrgeNumber}</p>
+        <p>${results.soulUrgeDescription}</p>
+        <p><strong>Birth Day Number:</strong> ${results.birthDayNumber}</p>
+        <p>${results.birthDayNumberDescription}</p>
+        <p><strong>Personal Year Number:</strong> ${results.personalYearNumber}</p>
+        <p>${results.personalYearNumberDescription}</p>
+        <p><strong>Personality Number:</strong> ${results.personalityNumber}</p>
+        <p>${results.personalityNumberDescription}</p>
+        <p><strong>Subconscious Self Number:</strong> ${results.subconsciousSelfNumber}</p>
+        <p>${results.subconsciousSelfNumberDescription}</p>
+        <p><strong>Challenge Numbers
+        <p><strong>Challenge Numbers:</strong> ${results.challengeNumbers.join(', ')}</p>
+        ${results.challengeNumbersDescription}
+        <p><strong>Pinnacle Numbers:</strong> ${results.pinnacleNumbers.join(', ')}</p>
+        ${results.pinnacleNumbersDescription}
+        <p><strong>Balance Number:</strong> ${results.balanceNumber}</p>
+        <p>${results.balanceNumberDescription}</p>
+    `;
+
+    if (results.karmicDebt) {
+        resultsHTML += `
+            <p><strong>Karmic Debt Number:</strong> ${results.karmicDebt}</p>
+            <p>${results.karmicDebtDescription}</p>
+        `;
+    }
+
+    resultsHTML += `
+        <h2>Gematria Results</h2>
+        <p><strong>Standard (Mispar Hechrachi):</strong> ${results.gematria.standard}</p>
+        <p>${analyzeGematriaValue(results.gematria.standard, 'Standard (Ordinal)')}</p>
+        <p><strong>Ordinal (Mispar Siduri):</strong> ${results.gematria.ordinal}</p>
+        <p>${analyzeGematriaValue(results.gematria.ordinal, 'Ordinal')}</p>
+        <p><strong>Reduced (Mispar Katan):</strong> ${results.gematria.reduced}</p>
+        <p>${analyzeGematriaValue(results.gematria.reduced, 'Reduction')}</p>
+
+        <h2>Elements and Modalities</h2>
+        <p>${results.elementsDescription}</p>
+        <p>${results.modalitiesDescription}</p>
+
+        <h2>Location Compatibility</h2>
+        <h3>Country Compatibility</h3>
+        <p><strong>Country Zodiac Sign:</strong> ${results.locationCompatibility.countryZodiac}</p>
+        <p><strong>Compatibility:</strong> ${results.locationCompatibility.countryRelationship}</p>
+        <p><strong>Optimal Countries:</strong> ${results.locationCompatibility.optimalCountries}</p>
+        
+        <h3>City Compatibility</h3>
+        <p><strong>City Zodiac Sign:</strong> ${results.locationCompatibility.cityZodiac}</p>
+        <p><strong>Compatibility:</strong> ${results.locationCompatibility.cityRelationship}</p>
+        <p><strong>Optimal Cities:</strong> ${results.locationCompatibility.optimalCities}</p>
+    `;
+
+    resultsDiv.innerHTML = resultsHTML;
+}
+
+// Additional helper functions
+
+function getPlanetaryDescription(planet, sign) {
+    const descriptions = {
+        "sun": {
+            "Aries": "Your core identity is energetic, pioneering, and confident.",
+            "Taurus": "Your essence is grounded, patient, and appreciative of beauty.",
+            "Gemini": "Your core self is communicative, versatile, and curious.",
+            "Cancer": "Your identity is nurturing, protective, and emotionally intuitive.",
+            "Leo": "Your essence is creative, charismatic, and naturally leadership-oriented.",
+            "Virgo": "Your core self is analytical, practical, and detail-oriented.",
+            "Libra": "Your identity centers on harmony, balance, and social relationships.",
+            "Scorpio": "Your essence is intense, passionate, and transformative.",
+            "Sagittarius": "Your core self is optimistic, philosophical, and adventure-seeking.",
+            "Capricorn": "Your identity is ambitious, disciplined, and responsible.",
+            "Aquarius": "Your essence is innovative, humanitarian, and independent.",
+            "Pisces": "Your core self is intuitive, compassionate, and imaginative."
+        },
+        "venus": {
+            "Aries": "You express love boldly and enjoy the thrill of new relationships.",
+            "Taurus": "Your approach to love is sensual, loyal, and appreciative of beauty.",
+            "Gemini": "You express affection through communication and intellectual connection.",
+            "Cancer": "Your love is nurturing, protective, and emotionally deep.",
+            "Leo": "You express love dramatically and enjoy grand romantic gestures.",
+            "Virgo": "Your approach to love is practical, service-oriented, and detail-focused.",
+            "Libra": "You seek harmony and balance in relationships and have a strong sense of fairness.",
+            "Scorpio": "Your love is intense, passionate, and transformative.",
+            "Sagittarius": "You seek adventure and growth in relationships and value freedom.",
+            "Capricorn": "Your approach to love is mature, responsible, and goal-oriented.",
+            "Aquarius": "You value uniqueness in relationships and may have unconventional views on love.",
+            "Pisces": "Your love is dreamy, compassionate, and sometimes self-sacrificing."
+        },
+        "mars": {
+            "Aries": "Your energy is assertive, courageous, and pioneering.",
+            "Taurus": "Your actions are steady, determined, and resource-focused.",
+            "Gemini": "Your energy is versatile, quick-thinking, and communicative.",
+            "Cancer": "Your actions are protective, emotionally driven, and indirect.",
+            "Leo": "Your energy is confident, dramatic, and leadership-oriented.",
+            "Virgo": "Your actions are precise, analytical, and service-oriented.",
+            "Libra": "Your energy is diplomatic, partnership-focused, and justice-seeking.",
+            "Scorpio": "Your actions are intense, strategic, and transformative.",
+            "Sagittarius": "Your energy is adventurous, optimistic, and expansive.",
+            "Capricorn": "Your actions are disciplined, ambitious, and goal-oriented.",
+            "Aquarius": "Your energy is innovative, humanitarian, and group-oriented.",
+            "Pisces": "Your actions are intuitive, compassionate, and sometimes evasive."
+        },
+        "mercury": {
+            "Aries": "Your thinking is quick, direct, and pioneering.",
+            "Taurus": "Your mental processes are methodical, practical, and steady.",
+            "Gemini": "Your communication style is versatile, witty, and curious.",
+            "Cancer": "Your thoughts are influenced by emotions and intuition.",
+            "Leo": "Your communication is confident, creative, and dramatic.",
+            "Virgo": "Your thinking is analytical, precise, and detail-oriented.",
+            "Libra": "Your mental approach is balanced, diplomatic, and aesthetic.",
+            "Scorpio": "Your thoughts are deep, investigative, and sometimes secretive.",
+            "Sagittarius": "Your thinking is optimistic, philosophical, and broad-minded.",
+            "Capricorn": "Your mental processes are structured, disciplined, and goal-oriented.",
+            "Aquarius": "Your thinking is innovative, original, and humanitarian.",
+            "Pisces": "Your mental approach is intuitive, imaginative, and empathetic."
+        }
+    };
+
+    return descriptions[planet][sign] || `Description not available for ${planet} in ${sign}.`;
+}
+
+// This function would be called when the form is submitted
+function handleFormSubmission(event) {
+    event.preventDefault();
+    
+    const birthdate = new Date(document.getElementById('birthdate').value);
+    const name = document.getElementById('name').value;
+    const city = document.getElementById('city').value;
+    const country = document.getElementById('country').value;
+
+    const results = performCalculations(birthdate, name, city, country);
+    displayResults(results);
+
+    document.getElementById('results').style.display = 'grid';
+}
+
+// Add event listener to the form
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('astrology-form');
+    if (form) {
+        form.addEventListener('submit', handleFormSubmission);
+    }
+});

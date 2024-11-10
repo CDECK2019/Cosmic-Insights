@@ -1,0 +1,276 @@
+@keyframes twinkle {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Remove these styles */
+.zodiac-circle {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    position: relative;
+}
+
+.zodiac-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: rotate-wheel 60s linear infinite;
+}
+
+/* Also remove this animation if it's not used elsewhere */
+@keyframes rotate-wheel {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes glimmer {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+:root {
+    --primary-color: #6200ea;
+    --secondary-color: #03dac6;
+    --background-color: #121212;
+    --surface-color: #000000; /* Updated to pure black */
+    --on-background: #ffffff;
+    --on-surface: #e0e0e0;
+    --accent-color: #bb86fc;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: var(--on-background);
+    overflow-x: hidden;
+    background: #000 url("starry_background.jpeg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Remove .stars and .twinkling classes */
+
+.container {
+    background-color: rgba(30, 30, 30, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    max-width: 1200px; /* Increased max-width for better grid layout */
+    margin: 40px auto;
+    position: relative;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--on-surface);
+    font-size: 14px;
+}
+
+input[type="date"], 
+input[type="text"], 
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--surface-color);
+    color: var(--on-surface);
+    border: none;
+    border-bottom: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* Add these new rules */
+input[type="date"]:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+input[type="date"]:not(:placeholder-shown),
+input[type="text"]:not(:placeholder-shown),
+input[type="number"]:not(:placeholder-shown),
+select:not(:placeholder-shown) {
+    background-color: var(--surface-color);
+    color: var(--on-surface);
+}
+
+/* Webkit browsers (Chrome, Safari) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--on-surface);
+    -webkit-box-shadow: 0 0 0px 1000px var(--surface-color) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Firefox */
+input:autofill,
+select:autofill {
+    background-color: var(--surface-color) !important;
+    color: var(--on-surface) !important;
+}
+
+.calculate-btn {
+    display: block;
+    width: 200px;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: var(--on-background);
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 30px auto 0;
+}
+
+.calculate-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+.result-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.7;
+    animation: glimmer 3s linear infinite;
+}
+
+.card-image {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    background-image: url('zodiac_placeholder.jpg'); /* Use the provided image */
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.result-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Specific card styles */
+.western-astrology .card-image { background-image: url('zodiac_placeholder.jpg'); }
+.chinese-astrology .card-image { background-image: url('zodiac_placeholder.jpg'); }
+.numerology .card-image { background-image: url('zodiac_placeholder.jpg'); }
+.gematria .card-image { background-image: url('zodiac_placeholder.jpg'); }
+.forecast .card-image { background-image: url('zodiac_placeholder.jpg'); }
+.location-compatibility .card-image { background-image: url('zodiac_placeholder.jpg'); }
+
+/* Existing styles for .box, .forecast-year, etc. remain the same */
+
+@media (max-width: 768px) {
+    #results {
+        grid-template-columns: 1fr;
+    }
+}
+
+.result-category {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #4a4a4a;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+.result-category h2 {
+    color: #ffd700;
+    border-bottom: 1px solid #ffd700;
+    padding: 15px 20px;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.category-content {
+    color: #ffffff;
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto; /* Add scrollbar if content exceeds max-height */
+    max-height: 500px; /* Set a maximum height */
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.forecast-year {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.relationship-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+.auspicious { background-color: #4CAF50; color: white; }
+.cautious { background-color: #FFC107; color: black; }
+.neutral { background-color: #9E9E9E; color: white; }
